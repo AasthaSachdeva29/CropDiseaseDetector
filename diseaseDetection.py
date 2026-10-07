@@ -8,7 +8,14 @@ from dotenv import load_dotenv
 
 # Load GOOGLE_API_KEY from a .env file placed next to this script
 load_dotenv()
-genai.configure(api_key=os.getenv("AIzaSyBnr7YPdpSjFW_2EVQGvV_0qrYPYMddBi0AQ.Ab8RN6J3q_49DcfyBUMvhcKrmuS_vgIUM0PqBtGtOt8b2FeXhQ"))
+api_key = os.getenv("GOOGLE_API_KEY")
+if not api_key:
+    raise RuntimeError(
+        "GOOGLE_API_KEY not found. Create a .env file containing:\n"
+        "GOOGLE_API_KEY=your-new-key-here"
+    )
+
+genai.configure(api_key=api_key)
 
 # generation_config = {
 #     "temperature": 0.5,
@@ -17,10 +24,7 @@ genai.configure(api_key=os.getenv("AIzaSyBnr7YPdpSjFW_2EVQGvV_0qrYPYMddBi0AQ.Ab8
 #     "max_output_tokens": 4096,
 # }
 
-safety_settings = [
-    {"category": f"HARM_CATEGORY_{category}", "threshold": "BLOCK_MEDIUM_AND_ABOVE"}
-    for category in ["HARASSMENT", "HATE_SPEECH", "SEXUALLY_EXPLICIT", "DANGEROUS_CONTENT"]
-]
+
 
 generation_config = {
     "temperature": 0.5,
